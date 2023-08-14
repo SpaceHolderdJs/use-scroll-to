@@ -1,25 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { CSSProperties } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { ScrollTopContextProvider } from "./contexts";
+import { Link, ScrollPoint } from "./components";
+
+const getStyles = (): CSSProperties =>  ({
+    width: "100vw",
+    height: "100vh",
+    background: ["blue", "red", "green"][Math.floor(Math.random() * ["blue", "red", "green"].length)]
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ScrollTopContextProvider>
+      <div className="App">
+        <header className="App-header">
+          <Link elementTag="section-1">Section A</Link>
+          <Link elementTag="section-2">Section B</Link>
+          <Link elementTag="section-3">Section C</Link>
+        </header>
+
+        <main>
+          <ScrollPoint tag="section-1" style={getStyles()}>
+            <h1>Section1</h1>
+          </ScrollPoint>
+          <ScrollPoint tag="section-2" style={getStyles()}>
+            <h1>Section2</h1>
+          </ScrollPoint>
+          <ScrollPoint tag="section-3" style={getStyles()}>
+            <h1>Section3</h1>
+          </ScrollPoint>
+        </main>
+      </div>
+    </ScrollTopContextProvider>
   );
 }
 

@@ -1,5 +1,5 @@
 import { useCallback, useContext } from "react";
-import { ScrollTopContetx } from "../contexts/ScrollTop.context";
+import { ScrollTopContext } from "../contexts/ScrollTop.context";
 
 declare type ScrollOptions = ScrollIntoViewOptions & {
     offsetX?: number;
@@ -7,16 +7,16 @@ declare type ScrollOptions = ScrollIntoViewOptions & {
 };
 
 export const useScrollTop = (
-    elemId: string,
+    tag: string,
     options: ScrollOptions = { behavior: "smooth", offsetX: 0, offsetY: 0 }
 ) => {
-    const { current, elements } = useContext(ScrollTopContetx)!;
+    const { current, elementsRefs } = useContext(ScrollTopContext)!;
 
     const scroll = useCallback(() => {
         const { offsetX, offsetY, ...defaultOptions } = options;
 
-        if (elements) {
-            const element = elements[elemId as keyof typeof elements];
+        if (elementsRefs) {
+            const element = elementsRefs[tag as keyof typeof elementsRefs];
 
             (offsetX || offsetY) &&
                 window.scrollTo({
@@ -25,9 +25,9 @@ export const useScrollTop = (
                     behavior: defaultOptions.behavior,
                 });
 
-            element.scrollIntoView(defaultOptions);
+            element?.current?.scrollIntoView(defaultOptions);
         }
-    }, [elemId, elements, options]);
+    }, [tag, elementsRefs, options]);
 
     return { scroll, current };
 };

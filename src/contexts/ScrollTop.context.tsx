@@ -1,46 +1,44 @@
 import {
   PropsWithChildren,
-  Ref,
   createContext,
   FC,
-  useEffect,
   useState,
   Dispatch,
+  RefObject,
 } from "react";
 
-declare type ElementsType = { [k: string]: HTMLElement };
+export type ElementsType = {
+  [k: string]: RefObject<HTMLElement | null> | null;
+};
 
 export interface ScrollTopContextItemsInterface {
-  current: HTMLElement | null;
-  setCurrent: Dispatch<HTMLElement | null>;
-  elementsIds: string[];
-  elements: ElementsType | null;
+  current: RefObject<HTMLElement | null> | null;
+  setCurrent: Dispatch<RefObject<HTMLElement | null> | null>;
+  elementsRefs: ElementsType | null;
+  setElementsRefs: Dispatch<ElementsType | null>;
 }
 
-export const ScrollTopContetx =
+export const ScrollTopContext =
   createContext<ScrollTopContextItemsInterface | null>(null);
 
 export const ScrollTopContextProvider: FC<
-  PropsWithChildren & { elementsIds: string[] }
-> = ({ children, elementsIds }) => {
-  const [elements, setElements] = useState<ElementsType | null>(null);
-  const [current, setCurrent] = useState<HTMLElement | null>(null);
-
-  useEffect(() => {
-    const elements: ElementsType = {};
-
-    elementsIds.forEach((e) => {
-      const element = document.getElementById(e);
-
-      element && (elements[e] = element);
-    });
-
-    setElements(elements);
-  }, [elementsIds]);
+  PropsWithChildren
+> = ({ children }) => {
+  const [elementsRefs, setElementsRefs] = useState<ElementsType | null>(null);
+  const [current, setCurrent] = useState<RefObject<HTMLElement | null> | null>(
+    null
+  );
 
   return (
-    <ScrollTopContetx.Provider value={{ elements, current, setCurrent, elementsIds }}>
+    <ScrollTopContext.Provider
+      value={{
+        elementsRefs,
+        setElementsRefs,
+        current,
+        setCurrent,
+      }}
+    >
       {children}
-    </ScrollTopContetx.Provider>
+    </ScrollTopContext.Provider>
   );
 };
