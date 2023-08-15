@@ -18,12 +18,13 @@ export const useScrollTop = (
         if (elementsRefs) {
             const element = elementsRefs[tag as keyof typeof elementsRefs];
 
-            (offsetX || offsetY) &&
+            if (offsetX || offsetY) {
                 window.scrollTo({
-                    left: offsetX,
-                    top: offsetY,
-                    behavior: defaultOptions.behavior,
+                    left: offsetX || 0,
+                    top: offsetY || 0,
+                    behavior: defaultOptions.behavior || "smooth",
                 });
+            }
 
             element?.current?.scrollIntoView(defaultOptions);
         }
