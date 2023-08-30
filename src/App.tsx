@@ -3,20 +3,12 @@ import logo from "./logo.svg";
 import "./App.css";
 import { ScrollTopContextProvider } from "./contexts";
 import { Link, ScrollPoint } from "./components";
-import { useScrollTop } from "./hooks";
 
 const getStyles = (): CSSProperties =>  ({
     width: "100vw",
     height: "100vh",
     background: ["blue", "red", "green"][Math.floor(Math.random() * ["blue", "red", "green"].length)]
 });
-
-function Component () {
-  const {scroll} = useScrollTop("section-1", {offsetY: 100, behavior: "smooth"})
-  return <div>
-    <button onClick={scroll}>Scroll</button>
-  </div>
-}
 
 function App() {
 
@@ -27,7 +19,6 @@ function App() {
           <Link elementTag="section-1">Section A</Link>
           <Link elementTag="section-2">Section B</Link>
           <Link elementTag="section-3">Section C</Link>
-          <Component />
         </header>
 
         <main>

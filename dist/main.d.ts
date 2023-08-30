@@ -1,5 +1,5 @@
 import * as react from 'react';
-import { FC, PropsWithChildren, DetailedHTMLProps, HTMLAttributes, RefObject, Dispatch } from 'react';
+import { FC, PropsWithChildren, DetailedHTMLProps, HTMLAttributes } from 'react';
 
 declare const Link: FC<PropsWithChildren & DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
     elementTag: string;
@@ -10,25 +10,17 @@ declare const ScrollPoint: FC<PropsWithChildren & DetailedHTMLProps<HTMLAttribut
     tag: string;
 }>;
 
-type ElementsType = {
-    [k: string]: RefObject<HTMLElement | null> | null;
-};
-interface ScrollTopContextItemsInterface {
-    current: RefObject<HTMLElement | null> | null;
-    setCurrent: Dispatch<RefObject<HTMLElement | null> | null>;
-    elementsRefs: ElementsType | null;
-    setElementsRefs: Dispatch<ElementsType | null>;
-}
-declare const ScrollTopContext: react.Context<ScrollTopContextItemsInterface | null>;
-declare const ScrollTopContextProvider: FC<PropsWithChildren>;
+declare const ScrollTopContextProvider: FC<PropsWithChildren & {
+    options?: ScrollOptions;
+}>;
 
-declare type ScrollOptions = ScrollIntoViewOptions & {
+declare type ScrollOptions$1 = ScrollIntoViewOptions & {
     offsetX?: number;
     offsetY?: number;
 };
-declare const useScrollTop: (tag: string, options?: ScrollOptions) => {
+declare const useScrollTo: (tag: string, options?: ScrollOptions$1) => {
     scroll: () => void;
     current: react.RefObject<HTMLElement | null> | null;
 };
 
-export { ElementsType, Link, ScrollPoint, ScrollTopContext, ScrollTopContextItemsInterface, ScrollTopContextProvider, useScrollTop };
+export { Link, ScrollPoint, ScrollTopContextProvider, useScrollTo };

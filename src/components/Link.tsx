@@ -4,19 +4,25 @@ import {
   DetailedHTMLProps,
   HTMLAttributes,
 } from "react";
-import { useScrollTop } from "../hooks";
+import { useScrollTo } from "../hooks";
 
 export const Link: FC<
   PropsWithChildren &
     DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
       elementTag: string;
-      isHasRouted?: boolean;
+      isHashRouted?: boolean;
     }
-> = ({ children, elementTag, isHasRouted = false }) => {
-  const { scroll } = useScrollTop(elementTag);
-  return isHasRouted ? (
+> = ({ children, elementTag, isHashRouted = false, ...rest }) => {
+  const { scroll } = useScrollTo(elementTag);
+  return isHashRouted ? (
     <a href={`#${elementTag}`}>{}</a>
   ) : (
-    <span onClick={scroll}>{children}</span>
+    <span
+      {...rest}
+      style={{ ...rest.style, cursor: "pointer" }}
+      onClick={scroll}
+    >
+      {children}
+    </span>
   );
 };

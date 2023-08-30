@@ -179,25 +179,22 @@ __export(main_exports, {
     ScrollPoint: function() {
         return ScrollPoint;
     },
-    ScrollTopContext: function() {
-        return ScrollTopContext;
-    },
     ScrollTopContextProvider: function() {
         return ScrollTopContextProvider;
     },
-    useScrollTop: function() {
-        return useScrollTop;
+    useScrollTo: function() {
+        return useScrollTo;
     }
 });
 module.exports = __toCommonJS(main_exports);
-// src/hooks/useScrollTop.ts
+// src/hooks/useScrollTo.ts
 var import_react2 = require("react");
 // src/contexts/ScrollTop.context.tsx
 var import_react = require("react");
 var import_jsx_runtime = require("react/jsx-runtime");
 var ScrollTopContext = (0, import_react.createContext)(null);
 var ScrollTopContextProvider = function(param) {
-    var children = param.children;
+    var children = param.children, options = param.options;
     var _ref = _sliced_to_array((0, import_react.useState)(null), 2), elementsRefs = _ref[0], setElementsRefs = _ref[1];
     var _ref1 = _sliced_to_array((0, import_react.useState)(null), 2), current = _ref1[0], setCurrent = _ref1[1];
     return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollTopContext.Provider, {
@@ -205,19 +202,20 @@ var ScrollTopContextProvider = function(param) {
             elementsRefs: elementsRefs,
             setElementsRefs: setElementsRefs,
             current: current,
-            setCurrent: setCurrent
+            setCurrent: setCurrent,
+            options: options
         },
         children: children
     });
 };
-// src/hooks/useScrollTop.ts
-var useScrollTop = function(tag) {
+// src/hooks/useScrollTo.ts
+var useScrollTo = function(tag) {
     var options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {
         behavior: "smooth",
         offsetX: 0,
         offsetY: 0
     };
-    var _ref = (0, import_react2.useContext)(ScrollTopContext), current = _ref.current, elementsRefs = _ref.elementsRefs;
+    var _ref = (0, import_react2.useContext)(ScrollTopContext), current = _ref.current, elementsRefs = _ref.elementsRefs, contextOptions = _ref.options;
     var scroll = (0, import_react2.useCallback)(function() {
         var offsetX = options.offsetX, offsetY = options.offsetY, defaultOptions = _object_without_properties(options, [
             "offsetX",
@@ -226,17 +224,20 @@ var useScrollTop = function(tag) {
         if (elementsRefs) {
             var _element_current, _element;
             var element = elementsRefs[tag];
-            (offsetX || offsetY) && window.scrollTo({
-                left: offsetX,
-                top: offsetY,
-                behavior: defaultOptions.behavior
-            });
-            (_element = element) === null || _element === void 0 ? void 0 : (_element_current = _element.current) === null || _element_current === void 0 ? void 0 : _element_current.scrollIntoView(defaultOptions);
+            if (offsetX || offsetY) {
+                window.scrollTo({
+                    left: offsetX || 0,
+                    top: offsetY || 0,
+                    behavior: defaultOptions.behavior || "smooth"
+                });
+            }
+            (_element = element) === null || _element === void 0 ? void 0 : (_element_current = _element.current) === null || _element_current === void 0 ? void 0 : _element_current.scrollIntoView(contextOptions || defaultOptions);
         }
     }, [
-        tag,
+        options,
         elementsRefs,
-        options
+        tag,
+        contextOptions
     ]);
     return {
         scroll: scroll,
@@ -247,7 +248,7 @@ var useScrollTop = function(tag) {
 var import_jsx_runtime2 = require("react/jsx-runtime");
 var Link = function(param) {
     var children = param.children, elementTag = param.elementTag, _param_isHasRouted = param.isHasRouted, isHasRouted = _param_isHasRouted === void 0 ? false : _param_isHasRouted;
-    var scroll = useScrollTop(elementTag).scroll;
+    var scroll = useScrollTo(elementTag).scroll;
     return isHasRouted ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", {
         href: "#".concat(elementTag)
     }) : /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", {
@@ -285,8 +286,7 @@ var ScrollPoint = function(_param) {
 0 && (module.exports = {
     Link: Link,
     ScrollPoint: ScrollPoint,
-    ScrollTopContext: ScrollTopContext,
     ScrollTopContextProvider: ScrollTopContextProvider,
-    useScrollTop: useScrollTop
+    useScrollTo: useScrollTo
 });
 //# sourceMappingURL=main.js.map

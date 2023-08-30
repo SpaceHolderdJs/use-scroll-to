@@ -16,14 +16,15 @@ export interface ScrollTopContextItemsInterface {
   setCurrent: Dispatch<RefObject<HTMLElement | null> | null>;
   elementsRefs: ElementsType | null;
   setElementsRefs: Dispatch<ElementsType | null>;
+  options?: ScrollOptions | null
 }
 
 export const ScrollTopContext =
   createContext<ScrollTopContextItemsInterface | null>(null);
 
 export const ScrollTopContextProvider: FC<
-  PropsWithChildren
-> = ({ children }) => {
+  PropsWithChildren & { options?: ScrollOptions }
+> = ({ children, options }) => {
   const [elementsRefs, setElementsRefs] = useState<ElementsType | null>(null);
   const [current, setCurrent] = useState<RefObject<HTMLElement | null> | null>(
     null
@@ -36,6 +37,7 @@ export const ScrollTopContextProvider: FC<
         setElementsRefs,
         current,
         setCurrent,
+        options
       }}
     >
       {children}

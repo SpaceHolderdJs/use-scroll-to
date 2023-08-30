@@ -6,11 +6,11 @@ declare type ScrollOptions = ScrollIntoViewOptions & {
     offsetY?: number;
 };
 
-export const useScrollTop = (
+export const useScrollTo = (
     tag: string,
     options: ScrollOptions = { behavior: "smooth", offsetX: 0, offsetY: 0 }
 ) => {
-    const { current, elementsRefs } = useContext(ScrollTopContext)!;
+    const { current, elementsRefs, options: contextOptions } = useContext(ScrollTopContext)!;
 
     const scroll = useCallback(() => {
         const { offsetX, offsetY, ...defaultOptions } = options;
@@ -26,9 +26,9 @@ export const useScrollTop = (
                 });
             }
 
-            element?.current?.scrollIntoView(defaultOptions);
+            element?.current?.scrollIntoView(contextOptions || defaultOptions);
         }
-    }, [tag, elementsRefs, options]);
+    }, [options, elementsRefs, tag, contextOptions]);
 
     return { scroll, current };
 };

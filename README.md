@@ -1,46 +1,125 @@
-# Getting Started with Create React App
+# Introdution
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to react-use-scroll-to API!
+Which allows to use bind scroll points in any place at your react project easily ✨. Package is light and supports TS natively.
+Let`s have some fun! ⚡️
 
-## Available Scripts
+## Instalation
 
-In the project directory, you can run:
+To install package you will need to use
 
-### `npm start`
+```bash
+  npm i react-use-scroll-to
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Types are also available
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```bash
+  npm i @types/react-use-scroll-to
+```
 
-### `npm test`
+## Documentation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Let`s see what do we have here ?
 
-### `npm run build`
+API itself has several components:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `<ScrollTopContextProvider>` - top-level context based on React context API which stores all the `<ScrollPoints>` refs. Just wrap everything you have in App or somewhere with it to provide the scope.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- `<ScrollPoint>` - one of possible point to scroll at. Basically just a component based on React `HTMLElement` with one additional prop named `tag`. Tag is just attribute you will need to use to bind window scroll to certain block (section) of your application.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `<Link>` - component which takes an `elementTag` props and binds scroller to given element (just like `<a>` tag at html with `href="#"` attribute)
 
-### `npm run eject`
+Using things above will be super enough to build basic scroll-points functionality. If you will need to build custom logical stuff - you will be happy to know that package has `useScrollTo` hook. Just check it out 😉
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Usage/Examples
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+First of all let's cover scope of your application with `<ScrollTopContextProvider>`. It's needed to collect all the `<Link>` components and store them into refs. Yes, this thing is react-friendly and using refs underhood 🤓.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```typescript
+import {
+  ScrollTopContextProvider,
+} from "react-use-scroll-to";
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+function MyAwesomeApp () => {
+    <ScrollTopContextProvider>
+        // your components here
+    </ScrollTopContextProvider>
+}
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Then would be needed to add some scroll points...
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```typescript
+import {
+  ScrollTopContextProvider,
+  ScrollPoint
+} from "react-use-scroll-to";
+
+
+function MyAwesomeApp () => {
+    <ScrollTopContextProvider>
+
+       <ScrollPoint tag="section-1">
+         <h1>I am first section</h1>
+       </ScrollPoint>
+
+       <ScrollPoint tag="section-2">
+         <h2>I am second section</h2>
+       </ScrollPoint>
+
+       <ScrollPoint tag="section-3">
+         <h3>I am third section</h3>
+       </ScrollPoint>
+
+    </ScrollTopContextProvider>
+}
+```
+
+Looks good, and finally, let's add links to our scroll points!
+
+```typescript
+import {
+  ScrollTopContextProvider,
+  ScrollPoint,
+  Link
+} from "react-use-scroll-to";
+
+
+function MyAwesomeApp () => {
+    <ScrollTopContextProvider>
+       <header>
+        <Link elementTag="section-1" >Section 1</Link>
+        <Link elementTag="section-2" >Section 2</Link>
+        <Link elementTag="section-3" >Section 3</Link>
+       </header>
+
+       <ScrollPoint tag="section-1">
+         <h1>I am first section</h1>
+       </ScrollPoint>
+
+       <ScrollPoint tag="section-2">
+         <h2>I am second section</h2>
+       </ScrollPoint>
+
+       <ScrollPoint tag="section-3">
+         <h3>I am third section</h3>
+       </ScrollPoint>
+
+    </ScrollTopContextProvider>
+}
+```
+
+Wonderful! This is it! 🦾
+
+## Author
+
+![](https://avatars.githubusercontent.com/u/62031924?s=100&v=4)
+[@SpaceHolderDjs](https://www.github.com/spaceholderdjs)
+
+## Badges
+
+![](https://img.shields.io/badge/JS%20based-black?style=for-the-badge&logo=javascript)
+![](https://img.shields.io/badge/For%20React-blue?style=for-the-badge&logo=react)
+![](https://img.shields.io/badge/TS%20Friendly-darkblue?style=for-the-badge&logo=typescript)

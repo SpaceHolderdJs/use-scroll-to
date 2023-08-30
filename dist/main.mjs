@@ -1,4 +1,4 @@
-// src/hooks/useScrollTop.ts
+// src/hooks/useScrollTo.ts
 import { useCallback, useContext } from "react";
 
 // src/contexts/ScrollTop.context.tsx
@@ -8,7 +8,7 @@ import {
 } from "react";
 import { jsx } from "react/jsx-runtime";
 var ScrollTopContext = createContext(null);
-var ScrollTopContextProvider = ({ children }) => {
+var ScrollTopContextProvider = ({ children, options }) => {
   const [elementsRefs, setElementsRefs] = useState(null);
   const [current, setCurrent] = useState(
     null
@@ -20,35 +20,38 @@ var ScrollTopContextProvider = ({ children }) => {
         elementsRefs,
         setElementsRefs,
         current,
-        setCurrent
+        setCurrent,
+        options
       },
       children
     }
   );
 };
 
-// src/hooks/useScrollTop.ts
-var useScrollTop = (tag, options = { behavior: "smooth", offsetX: 0, offsetY: 0 }) => {
-  const { current, elementsRefs } = useContext(ScrollTopContext);
+// src/hooks/useScrollTo.ts
+var useScrollTo = (tag, options = { behavior: "smooth", offsetX: 0, offsetY: 0 }) => {
+  const { current, elementsRefs, options: contextOptions } = useContext(ScrollTopContext);
   const scroll = useCallback(() => {
     const { offsetX, offsetY, ...defaultOptions } = options;
     if (elementsRefs) {
       const element = elementsRefs[tag];
-      (offsetX || offsetY) && window.scrollTo({
-        left: offsetX,
-        top: offsetY,
-        behavior: defaultOptions.behavior
-      });
-      element?.current?.scrollIntoView(defaultOptions);
+      if (offsetX || offsetY) {
+        window.scrollTo({
+          left: offsetX || 0,
+          top: offsetY || 0,
+          behavior: defaultOptions.behavior || "smooth"
+        });
+      }
+      element?.current?.scrollIntoView(contextOptions || defaultOptions);
     }
-  }, [tag, elementsRefs, options]);
+  }, [options, elementsRefs, tag, contextOptions]);
   return { scroll, current };
 };
 
 // src/components/Link.tsx
 import { jsx as jsx2 } from "react/jsx-runtime";
 var Link = ({ children, elementTag, isHasRouted = false }) => {
-  const { scroll } = useScrollTop(elementTag);
+  const { scroll } = useScrollTo(elementTag);
   return isHasRouted ? /* @__PURE__ */ jsx2("a", { href: `#${elementTag}` }) : /* @__PURE__ */ jsx2("span", { onClick: scroll, children });
 };
 
@@ -70,8 +73,7 @@ var ScrollPoint = ({ children, tag, ...rest }) => {
 export {
   Link,
   ScrollPoint,
-  ScrollTopContext,
   ScrollTopContextProvider,
-  useScrollTop
+  useScrollTo
 };
 //# sourceMappingURL=main.mjs.map
