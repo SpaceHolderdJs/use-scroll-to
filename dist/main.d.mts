@@ -3,7 +3,7 @@ import { FC, PropsWithChildren, DetailedHTMLProps, HTMLAttributes } from 'react'
 
 declare const Link: FC<PropsWithChildren & DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
     elementTag: string;
-    isHasRouted?: boolean;
+    isHashRouted?: boolean;
 }>;
 
 declare const ScrollPoint: FC<PropsWithChildren & DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {

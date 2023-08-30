@@ -50,9 +50,17 @@ var useScrollTo = (tag, options = { behavior: "smooth", offsetX: 0, offsetY: 0 }
 
 // src/components/Link.tsx
 import { jsx as jsx2 } from "react/jsx-runtime";
-var Link = ({ children, elementTag, isHasRouted = false }) => {
+var Link = ({ children, elementTag, isHashRouted = false, ...rest }) => {
   const { scroll } = useScrollTo(elementTag);
-  return isHasRouted ? /* @__PURE__ */ jsx2("a", { href: `#${elementTag}` }) : /* @__PURE__ */ jsx2("span", { onClick: scroll, children });
+  return isHashRouted ? /* @__PURE__ */ jsx2("a", { href: `#${elementTag}` }) : /* @__PURE__ */ jsx2(
+    "span",
+    {
+      ...rest,
+      style: { ...rest.style, cursor: "pointer" },
+      onClick: scroll,
+      children
+    }
+  );
 };
 
 // src/components/ScrollPoint.tsx
