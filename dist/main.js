@@ -246,15 +246,22 @@ var useScrollTo = function(tag) {
 };
 // src/components/Link.tsx
 var import_jsx_runtime2 = require("react/jsx-runtime");
-var Link = function(param) {
-    var children = param.children, elementTag = param.elementTag, _param_isHasRouted = param.isHasRouted, isHasRouted = _param_isHasRouted === void 0 ? false : _param_isHasRouted;
+var Link = function(_param) {
+    var children = _param.children, elementTag = _param.elementTag, _param_isHashRouted = _param.isHashRouted, isHashRouted = _param_isHashRouted === void 0 ? false : _param_isHashRouted, rest = _object_without_properties(_param, [
+        "children",
+        "elementTag",
+        "isHashRouted"
+    ]);
     var scroll = useScrollTo(elementTag).scroll;
-    return isHasRouted ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", {
+    return isHashRouted ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("a", {
         href: "#".concat(elementTag)
-    }) : /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", {
+    }) : /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", _object_spread_props(_object_spread({}, rest), {
+        style: _object_spread_props(_object_spread({}, rest.style), {
+            cursor: "pointer"
+        }),
         onClick: scroll,
         children: children
-    });
+    }));
 };
 // src/components/ScrollPoint.tsx
 var import_react3 = require("react");
